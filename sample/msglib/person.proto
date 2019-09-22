@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+package sample.msglib;
+option go_package = "sample/msglib";
+
+import "google/api/annotations.proto";
+
+message Address {
+  optional string house_num = 1;
+  optional string building = 2;
+  optional string street = 3;
+  optional string locality = 4;
+  optional string city = 5;
+  optional string postal_code = 6;
+}
+
+message Person {
+  optional string name = 1;
+  optional int32 age = 2;
+  map<string, Address> addresses = 3;
+}
+
+service PersonRegistry {
+  rpc Lookup(Person) returns(Person) {
+    option (google.api.http) = {
+      get: "/lookup"
+    };
+  }
+
+  rpc Create(Person) returns(Person) {
+    option (google.api.http) = {
+      post: "/create"
+    };
+  }
+}
